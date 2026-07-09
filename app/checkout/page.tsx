@@ -96,7 +96,7 @@ export default function CheckoutPage() {
       if (order.error) throw new Error(order.error);
 
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_xxxxx',
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_TAvHs3fXMPmIld',
         amount: order.amount,
         currency: order.currency,
         order_id: order.id,
