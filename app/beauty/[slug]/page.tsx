@@ -43,13 +43,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const a = await getArticle(slug);
 
-  const title = a?.meta_title || a?.title || 'Beauty & Skincare Article – VedaWell';
-  const description = a?.meta_description || a?.excerpt || 'Natural beauty tips, DIY skincare remedies, and holistic wellness guides on VedaWell.';
-  const imageUrl = a?.og_image || a?.image_url;
+  // If a is null, provide fallback metadata immediately
+  if (!a) {
+    return {
+      title: 'Article Not Found – VedaWell',
+      description: 'The article you are looking for does not exist.',
+    };
+  }
 
-  const keywords = Array.isArray(a?.meta_keywords)
+  const title = a.meta_title || a.title || 'Beauty & Skincare Article – VedaWell';
+  const description = a.meta_description || a.excerpt || 'Natural beauty tips, DIY skincare remedies, and holistic wellness guides on VedaWell.';
+  const imageUrl = a.og_image || a.image_url;
+
+  // Use optional chaining with a fallback for the join
+  const keywords = Array.isArray(a.meta_keywords)
     ? a.meta_keywords.join(', ')
-    : a?.meta_keywords || undefined;
+    : typeof a.meta_keywords === 'string' 
+      ? a.meta_keywords 
+      : undefined;
 
   return {
     title,
